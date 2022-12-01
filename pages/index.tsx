@@ -20,7 +20,12 @@ export default function Home() {
             <Post key={post.title} post={post} />
           ))}
         </div>
-        <div className='col-span-1 lg:col-span-4'></div>
+        <div className='col-span-1 lg:col-span-4'>
+          <div className='lg:sticky relative top-8'>
+            <PostWidget />
+            <Categories />
+          </div>
+        </div>
       </main>
     </div>
   );
