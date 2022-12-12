@@ -1,11 +1,20 @@
 import Head from 'next/head';
 import { Post, PostWidget, Categories } from '../components';
+import { getPosts } from '../services';
+import { Post as PostType } from '../types';
 
 const posts = [
   { title: 'Pokémon song', excerpt: 'What Kind Of Pokémon Are You?' },
   { title: 'Motivation', excerpt: 'Do you want to be a Pokémon Master?' }
 ];
-export default function Home() {
+
+type HomeProps = {
+  posts: Array<{
+    node: PostType;
+  }>;
+};
+
+export default function Home({ posts }: HomeProps) {
   return (
     <div className='container mx-auto px-10 mb-8'>
       <Head>
@@ -16,7 +25,7 @@ export default function Home() {
 
       <main className='grid grid-cols-1 lg:grid-cols-12 gap-12'>
         <div className='col-span-1 lg:col-span-8'>
-          {posts.map((post) => (
+          {posts.map(({ node: post }) => (
             <Post key={post.title} post={post} />
           ))}
         </div>
@@ -29,4 +38,12 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const posts = (await getPosts()) || [];
+
+  return {
+    props: { posts }
+  };
 }
